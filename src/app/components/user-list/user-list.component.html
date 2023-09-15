@@ -1,0 +1,179 @@
+<div class="main">
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <!-- navbar -->
+  <nav class="py-2 px-2">
+    <div>
+      <h4>UserManagementDashboard</h4>
+    </div>
+    <div>
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn"
+        (click)="add()"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Add User
+      </button>
+    </div>
+  </nav>
+
+  <!-- table -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Role</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <th scope="row">{{ user.id }}</th>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.company.bs }}</td>
+        <td class="delete">
+          <i
+            class="fa fa-edit"
+            (click)="update(user)"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          ></i>
+          &nbsp;
+          <i (click)="deleteUser(user.id)" class="fa fa-trash"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            User Information
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <!-- Form -->
+        <div class="modal-body">
+          <form [formGroup]="addNewUser" (ngSubmit)="addUser()">
+            <div class="mb-3">
+              <label for="exampleInputName" class="form-label">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="exampleInputName"
+                aria-describedby="emailHelp"
+                formControlName="name"
+              />
+              <small
+                *ngIf="
+                  addNewUser.get('name')?.invalid &&
+                  addNewUser.get('name')?.touched
+                "
+                class="text-danger"
+              >
+                Name is required.
+              </small>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label"
+                >Email address</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                formControlName="email"
+              />
+              <small
+                *ngIf="
+                  addNewUser.get('email')?.invalid &&
+                  addNewUser.get('email')?.touched
+                "
+                class="text-danger"
+              >
+                Email Address is required.
+              </small>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputRole" class="form-label">Role</label>
+              <input
+                type="text"
+                class="form-control"
+                id="exampleInputRole"
+                aria-describedby="emailHelp"
+                formControlName="role"
+              />
+              <small
+                *ngIf="
+                  addNewUser.get('role')?.invalid &&
+                  addNewUser.get('role')?.touched
+                "
+                class="text-danger"
+              >
+                Role is required.
+              </small>
+            </div>
+            <div class="modal-footer bg-primary">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                (click)="updateData()"
+                *ngIf="showupdate"
+                type="button"
+                class="btn btn-warning"
+                data-bs-dismiss="modal"
+                [disabled]="
+                  addNewUser.get('name')?.invalid ||
+                  addNewUser.get('email')?.invalid ||
+                  addNewUser.get('role')?.invalid ||
+                  addNewUser.get('name')?.pristine
+                "
+              >
+                Update
+              </button>
+              <button
+                *ngIf="showadd"
+                type="submit"
+                class="btn btn-success"
+                data-bs-dismiss="modal"
+                [disabled]="
+                  addNewUser.get('name')?.invalid ||
+                  addNewUser.get('email')?.invalid ||
+                  addNewUser.get('role')?.invalid ||
+                  addNewUser.get('name')?.pristine
+                "
+              >
+                Add
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
